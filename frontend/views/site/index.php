@@ -1,53 +1,97 @@
-<?php
+<div class="row">
 
-/* @var $this yii\web\View */
+    <!-- Blog Entries Column -->
+    <div class="col-md-8">
+        <?php var_dump(Yii::$app->user->identity->username)?>
+        <h1 class="page-header">
+            Page Heading
+            <small>Secondary Text</small>
+        </h1>
 
-$this->title = 'My Yii Application';
-?>
-<div class="site-index">
+        <!-- First Blog Post -->
+        <h2>
+            <a href="#">Blog Post Title</a>
+        </h2>
 
-    <div class="jumbotron">
-        <h1>Congratulations!</h1>
+        <p class="lead">
+            by <a href="index.php">Start Bootstrap</a>
+        </p>
 
-        <p class="lead">You have successfully created your Yii-powered application.</p>
+        <p><span class="glyphicon glyphicon-time"></span> Posted on August 28, 2013 at 10:00 PM</p>
+        <hr>
+        <img class="img-responsive" src="http://placehold.it/900x300" alt="">
+        <hr>
+        <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Dolore, veritatis, tempora, necessitatibus
+            inventore nisi quam quia repellat ut tempore laborum possimus eum dicta id animi corrupti debitis ipsum
+            officiis rerum.</p>
+        <p>
+            <a class="btn btn-primary" href="#">Read More <span class="glyphicon glyphicon-chevron-right"></span></a>
+            <a class="btn btn-default" href="#"><span class="badge">4</span> Likes <span class="glyphicon glyphicon-thumbs-up"></span></a>
+        </p>
+        <hr>
+        <p>
+            Tags:
+            <span class="label label-primary">Primary</span>
+        </p>
+        <hr>
 
-        <p><a class="btn btn-lg btn-success" href="http://www.yiiframework.com">Get started with Yii</a></p>
+        <!-- Pager -->
+        <ul class="pager">
+            <li class="previous">
+                <a href="#">&larr; Older</a>
+            </li>
+            <li class="next">
+                <a href="#">Newer &rarr;</a>
+            </li>
+        </ul>
+
     </div>
 
-    <div class="body-content">
+    <!-- Blog Sidebar Widgets Column -->
+    <div class="col-md-4">
 
-        <div class="row">
-            <div class="col-lg-4">
-                <h2>Heading</h2>
+        <!-- Blog Categories Well -->
+        <div class="well">
+            <h4>Blog Categories</h4>
 
-                <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et
-                    dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip
-                    ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu
-                    fugiat nulla pariatur.</p>
-
-                <p><a class="btn btn-default" href="http://www.yiiframework.com/doc/">Yii Documentation &raquo;</a></p>
+            <div class="row">
+                <div class="col-lg-6">
+                    <ul class="list-unstyled">
+                        <li><a href="#">Category Name</a>
+                        </li>
+                        <li><a href="#">Category Name</a>
+                        </li>
+                        <li><a href="#">Category Name</a>
+                        </li>
+                        <li><a href="#">Category Name</a>
+                        </li>
+                    </ul>
+                </div>
+                <!-- /.col-lg-6 -->
+                <div class="col-lg-6">
+                    <ul class="list-unstyled">
+                        <li><a href="#">Category Name</a>
+                        </li>
+                        <li><a href="#">Category Name</a>
+                        </li>
+                        <li><a href="#">Category Name</a>
+                        </li>
+                        <li><a href="#">Category Name</a>
+                        </li>
+                    </ul>
+                </div>
+                <!-- /.col-lg-6 -->
             </div>
-            <div class="col-lg-4">
-                <h2>Heading</h2>
+            <!-- /.row -->
+        </div>
 
-                <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et
-                    dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip
-                    ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu
-                    fugiat nulla pariatur.</p>
+        <!-- Side Widget Well -->
+        <div class="well">
+            <h4>Side Widget Well</h4>
 
-                <p><a class="btn btn-default" href="http://www.yiiframework.com/forum/">Yii Forum &raquo;</a></p>
-            </div>
-            <div class="col-lg-4">
-                <h2>Heading</h2>
-
-                <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et
-                    dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip
-                    ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu
-                    fugiat nulla pariatur.</p>
-
-                <p><a class="btn btn-default" href="http://www.yiiframework.com/extensions/">Yii Extensions &raquo;</a></p>
-            </div>
+            <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Inventore, perspiciatis adipisci accusamus
+                laudantium odit aliquam repellat tempore quos aspernatur vero.</p>
         </div>
 
     </div>
-</div>
+

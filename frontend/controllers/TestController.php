@@ -8,11 +8,11 @@ use yii\web\Controller;
 /**
  * Site controller
  */
-class SiteController extends Controller
+class TestController extends Controller
 {
     public function actionIndex()
     {
-        return $this->render('index');
+        var_dump(123);
     }
 
 }
