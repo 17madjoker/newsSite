@@ -1,49 +1,59 @@
+<?php
+
+use yii\helpers\Html;
+use yii\i18n\Formatter;
+use yii\widgets\LinkPager;
+use yii\helpers\Url;
+
+?>
+
 <div class="row">
 
     <!-- Blog Entries Column -->
     <div class="col-md-8">
-        <?php var_dump(Yii::$app->user->identity->username)?>
         <h1 class="page-header">
-            Page Heading
-            <small>Secondary Text</small>
+            Welcome,
+            <small><?php if(Yii::$app->user->identity):?>
+                    <?=Html::encode(Yii::$app->user->identity->username)?>
+                    <?php else: ?>
+                    Guest
+                    <?php endif?>
+            </small>
         </h1>
 
         <!-- First Blog Post -->
+        <?php foreach($news as $oneNews): ?>
         <h2>
-            <a href="#">Blog Post Title</a>
+            <a href="<?=Url::to(['/news/default/view','id' => $oneNews->id])?>"><?=Html::encode($oneNews->title)?></a>
         </h2>
 
         <p class="lead">
-            by <a href="index.php">Start Bootstrap</a>
+            by <a href="#"><?=Html::encode($oneNews->getNewsAuthor())?></a>
         </p>
 
-        <p><span class="glyphicon glyphicon-time"></span> Posted on August 28, 2013 at 10:00 PM</p>
+        <p><span class="glyphicon glyphicon-time"></span> Posted on <?=Yii::$app->formatter->asDate($oneNews->date)?></p>
         <hr>
         <img class="img-responsive" src="http://placehold.it/900x300" alt="">
         <hr>
-        <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Dolore, veritatis, tempora, necessitatibus
-            inventore nisi quam quia repellat ut tempore laborum possimus eum dicta id animi corrupti debitis ipsum
-            officiis rerum.</p>
+        <p><?=Html::encode($oneNews->description)?></p>
         <p>
-            <a class="btn btn-primary" href="#">Read More <span class="glyphicon glyphicon-chevron-right"></span></a>
-            <a class="btn btn-default" href="#"><span class="badge">4</span> Likes <span class="glyphicon glyphicon-thumbs-up"></span></a>
-        </p>
-        <hr>
-        <p>
-            Tags:
-            <span class="label label-primary">Primary</span>
+            <a class="btn btn-primary" href="<?=Url::to(['/news/default/view','id' => $oneNews->id])?>">Read More <span class="glyphicon glyphicon-chevron-right"></span></a>
+            <a class="btn btn-default" href="#"><span class="badge"><?=$oneNews->likes?></span> Likes <span class="glyphicon glyphicon-thumbs-up"></span></a>
         </p>
         <hr>
 
-        <!-- Pager -->
-        <ul class="pager">
-            <li class="previous">
-                <a href="#">&larr; Older</a>
-            </li>
-            <li class="next">
-                <a href="#">Newer &rarr;</a>
-            </li>
-        </ul>
+        <p>Tags:
+            <?php foreach($oneNews->tags as $tag): ?>
+                <a href="#"><span class="label label-primary"><?=$tag->title?></span></a>
+            <?php endforeach ?>
+        </p>
+
+        <hr>
+        <?php endforeach ?>
+
+        <?=LinkPager::widget([
+            'pagination' => $pages,
+        ]);?>
 
     </div>
 
@@ -55,42 +65,36 @@
             <h4>Blog Categories</h4>
 
             <div class="row">
-                <div class="col-lg-6">
-                    <ul class="list-unstyled">
-                        <li><a href="#">Category Name</a>
-                        </li>
-                        <li><a href="#">Category Name</a>
-                        </li>
-                        <li><a href="#">Category Name</a>
-                        </li>
-                        <li><a href="#">Category Name</a>
-                        </li>
-                    </ul>
+                <?php foreach($categories as $category):?>
+                <div class="container">
+                    <p>
+                        <a href="#" class="btn btn-default"><?=$category->title?> <span class="badge"><?=$category->getNewsCount()?></span></a>
+                    </p>
                 </div>
-                <!-- /.col-lg-6 -->
-                <div class="col-lg-6">
-                    <ul class="list-unstyled">
-                        <li><a href="#">Category Name</a>
-                        </li>
-                        <li><a href="#">Category Name</a>
-                        </li>
-                        <li><a href="#">Category Name</a>
-                        </li>
-                        <li><a href="#">Category Name</a>
-                        </li>
-                    </ul>
-                </div>
-                <!-- /.col-lg-6 -->
+                <?php endforeach ?>
             </div>
             <!-- /.row -->
         </div>
 
         <!-- Side Widget Well -->
-        <div class="well">
-            <h4>Side Widget Well</h4>
 
-            <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Inventore, perspiciatis adipisci accusamus
-                laudantium odit aliquam repellat tempore quos aspernatur vero.</p>
+        <div class="well">
+            <h4>Popular posts:</h4>
+            <?php foreach($popular as $one):?>
+            <h4><?=Html::encode($one->title)?></h4>
+            <p><?=Html::encode($one->description)?></p>
+                <p><span class="glyphicon glyphicon-eye-open"></span> <?=Html::encode($one->viewed)?></p>
+            <hr>
+            <?php endforeach ?>
+        </div>
+
+        <div class="well">
+            <h4>Tags</h4>
+            <p>
+                <?php foreach($tags as $tag):?>
+                    <a href="#"><span class="label label-primary"><?=$tag->title?></span></a>
+                <?php endforeach ?>
+            </p>
         </div>
 
     </div>

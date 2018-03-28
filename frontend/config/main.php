@@ -49,7 +49,6 @@ return [
             'enablePrettyUrl' => true,
             'showScriptName' => false,
             'rules' => [
-                '<module>/<controller>/<action>' =>  '<module>/<controller>/<action>',
             ],
         ],
 
