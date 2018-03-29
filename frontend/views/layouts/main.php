@@ -41,7 +41,7 @@ AppAsset::register($this);
                     <li><a href="<?=Url::to(['/user/default/login'])?>"><span class="glyphicon glyphicon-user"></span> Login</a></li>
 
                     <?php if(!Yii::$app->user->isGuest):?>
-                        <li><a href="<?=Url::to(['/news/default/create'])?>"><span class="glyphicon glyphicon-plus"></span>
+                        <li><a href="<?=Url::to(['/news/crud/create'])?>"><span class="glyphicon glyphicon-plus"></span>
                                 Create news</a></li>
                         <li><a href="<?=Url::to(['/user/default/logout'])?>"><span class="glyphicon glyphicon-off"></span> Logout
                                 <?php if (Yii::$app->user->identity): ?>

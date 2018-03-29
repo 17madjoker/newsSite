@@ -6,9 +6,6 @@ use yii\helpers\Html;
 /* @var $model frontend\modules\news\models\News */
 
 $this->title = 'Update News: {nameAttribute}';
-$this->params['breadcrumbs'][] = ['label' => 'News', 'url' => ['index']];
-$this->params['breadcrumbs'][] = ['label' => $model->title, 'url' => ['view', 'id' => $model->id]];
-$this->params['breadcrumbs'][] = 'Update';
 ?>
 <div class="news-update">
 

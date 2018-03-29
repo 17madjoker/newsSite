@@ -7,8 +7,6 @@ use yii\helpers\Html;
 /* @var $model frontend\modules\news\models\News */
 
 $this->title = 'Create News';
-$this->params['breadcrumbs'][] = ['label' => 'News', 'url' => ['index']];
-$this->params['breadcrumbs'][] = $this->title;
 ?>
 <div class="news-create">
 
@@ -16,6 +14,7 @@ $this->params['breadcrumbs'][] = $this->title;
 
     <?= $this->render('_form', [
         'model' => $model,
+        'categories' => $categories
     ]) ?>
 
 </div>

@@ -4,6 +4,7 @@ namespace frontend\modules\news\models;
 
 use Yii;
 use frontend\modules\user\models\User;
+use frontend\modules\news\models\LikeNewsUser;
 
 /**
  * This is the model class for table "news".
@@ -90,6 +91,32 @@ class News extends \yii\db\ActiveRecord
     {
         return $this->hasMany(Tags::className(), ['id' => 'tag_id'])
             ->viaTable('news_tag', ['news_id' => 'id']);
+    }
+
+    public function isLiked()
+    {
+        if ($like = LikeNewsUser::find()
+            ->where("user_id = $this->user_id")
+            ->andWhere("news_id = $this->id")
+            ->one())
+        {
+            return true;
+        }
+    }
+
+    public function getFolder()
+    {
+        return Yii::getAlias('@app').'/web/images/';
+    }
+
+    public function getImage()
+    {
+        return '/frontend/web/images/'.$this->image;
+    }
+
+    public function generateFileName()
+    {
+        return sha1(($this->image->baseName)).'.'.$this->image->extension;
     }
 
 }

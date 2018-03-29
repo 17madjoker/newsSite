@@ -2,6 +2,7 @@
 
 namespace frontend\modules\news\controllers;
 
+use frontend\modules\news\models\LikeNewsUser;
 use frontend\modules\news\models\Tags;
 use Yii;
 use frontend\modules\news\models\News;
@@ -26,19 +27,89 @@ class DefaultController extends Controller
     public function actionView($id)
     {
         $tags = Tags::find()->all();
+        $news = $this->findModel($id);
+        $news->viewed += 1;
+        $news->save(false);
 
         return $this->render('view', [
-            'news' => $this->findModel($id),
+            'news' => $news,
             'tags' => $tags
         ]);
     }
 
-    public function actionLike()
+    /**
+     * @param $id
+     */
+    public function actionLike($id)
     {
         if (Yii::$app->user->isGuest)
         {
             return $this->redirect('/user/default/login');
         }
+
+        $news = $this->findModel($id);
+        if (!LikeNewsUser::find()
+            ->where("user_id = $news->user_id")
+            ->andWhere("news_id = $news->id")
+            ->one())
+        {
+            $like = new LikeNewsUser();
+            $like->user_id = $news->user_id;
+            $like->news_id = $news->id;
+                if ($like->save())
+                {
+                    $news->likes += 1;
+                    $news->save(false);
+                    return $this->redirect(Yii::$app->request->referrer);
+                }
+        }
+        return $this->redirect(Yii::$app->request->referrer);
+    }
+
+    public function actionDislike($id)
+    {
+        if (Yii::$app->user->isGuest)
+        {
+            return $this->redirect('/user/default/login');
+        }
+
+        $news = $this->findModel($id);
+        if ($like = LikeNewsUser::find()
+            ->where("user_id = $news->user_id")
+            ->andWhere("news_id = $news->id")
+            ->one())
+        {
+            if ($like->delete())
+            {
+                $news->likes -= 1;
+                $news->save(false);
+                return $this->redirect(Yii::$app->request->referrer);
+            }
+        }
+        return $this->redirect(Yii::$app->request->referrer);
+    }
+
+    public function actionViewNewsTags($id)
+    {
+        $allnews = Tags::findOne($id)->news;
+        $tags = Tags::find()->all();
+
+        return $this->render('viewtags',[
+            'allnews' => $allnews,
+            'tags' => $tags
+        ]);
+    }
+
+    public function actionViewNewsCategory($id)
+    {
+        $category = Category::findOne($id);
+        $allnews = $category->news;
+        $tags = Tags::find()->all();
+
+        return $this->render('viewcategory',[
+            'allnews' => $allnews,
+            'tags' => $tags
+        ]);
     }
 
     public function actionUserPosts($id)
@@ -61,73 +132,6 @@ class DefaultController extends Controller
             'categories' => $categories,
             'tags' => $tags
         ]);
-    }
-
-    /**
-     * Creates a new News model.
-     * If creation is successful, the browser will be redirected to the 'view' page.
-     * @return mixed
-     */
-    public function actionCreate()
-    {
-        if (Yii::$app->user->isGuest)
-        {
-            return $this->redirect('/site/index');
-        }
-
-        $model = new News();
-
-        if ($model->load(Yii::$app->request->post()) && $model->save()) {
-            return $this->redirect(['view', 'id' => $model->id]);
-        }
-
-        return $this->render('create', [
-            'model' => $model,
-        ]);
-    }
-
-    /**
-     * Updates an existing News model.
-     * If update is successful, the browser will be redirected to the 'view' page.
-     * @param integer $id
-     * @return mixed
-     * @throws NotFoundHttpException if the model cannot be found
-     */
-    public function actionUpdate($id)
-    {
-        if (Yii::$app->user->isGuest)
-        {
-            return $this->redirect('/site/index');
-        }
-
-        $model = $this->findModel($id);
-
-        if ($model->load(Yii::$app->request->post()) && $model->save()) {
-            return $this->redirect(['view', 'id' => $model->id]);
-        }
-
-        return $this->render('update', [
-            'model' => $model,
-        ]);
-    }
-
-    /**
-     * Deletes an existing News model.
-     * If deletion is successful, the browser will be redirected to the 'index' page.
-     * @param integer $id
-     * @return mixed
-     * @throws NotFoundHttpException if the model cannot be found
-     */
-    public function actionDelete($id)
-    {
-        if (Yii::$app->user->isGuest)
-        {
-            return $this->redirect('/site/index');
-        }
-
-        $this->findModel($id)->delete();
-
-        return $this->redirect(['index']);
     }
 
     /**

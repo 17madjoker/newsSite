@@ -8,6 +8,7 @@ use yii\web\Controller;
 use frontend\modules\user\models\SignupForm;
 use frontend\modules\news\models\News;
 use yii\data\Pagination;
+use yii\data\Sort;
 
 
 /**
@@ -17,11 +18,26 @@ class SiteController extends Controller
 {
     public function actionIndex()
     {
+        $sort = new Sort([
+            'attributes' => [
+                'date' => [
+                    'asc' => ['date' => SORT_ASC],
+                    'desc' => ['date' => SORT_DESC],
+                    'default' => SORT_DESC,
+                    'label' => 'Date',
+                ],
+                'likes',
+                'viewed',
+
+            ],
+        ]);
+
         $query_news = News::find();
         $countQuery = clone $query_news;
         $pages = new Pagination(['totalCount' => $countQuery->count(), 'pageSize' => 2]);
         $news = $query_news->offset($pages->offset)
             ->limit($pages->limit)
+            ->orderBy($sort->orders)
             ->all();
 
         $popular = News::getPopular();
@@ -33,7 +49,8 @@ class SiteController extends Controller
             'pages' => $pages,
             'popular' => $popular,
             'categories' => $categories,
-            'tags' => $tags
+            'tags' => $tags,
+            'sort' => $sort
         ]);
     }
 

@@ -54,7 +54,7 @@ class Category extends \yii\db\ActiveRecord
 
     public function getNewsFromCategory()
     {
-        return News::find()->all();
+        return News::find()->where(['category_id' => $this->id])->all();
     }
 
 }
