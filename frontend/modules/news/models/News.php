@@ -116,7 +116,27 @@ class News extends \yii\db\ActiveRecord
 
     public function generateFileName()
     {
-        return sha1(($this->image->baseName)).'.'.$this->image->extension;
+        return sha1((uniqid($this->image->baseName)));
     }
+
+    public function beforeDelete()
+    {
+        if ($this->image)
+        {
+            unlink(self::getFolder().$this->image);
+        }
+        return parent::beforeDelete();
+    }
+
+    public function beforeUpdate()
+    {
+        if ($this->image)
+        {
+            unlink(self::getFolder().$this->image);
+        }
+        return parent::beforeUpdate();
+    }
+
+
 
 }

@@ -10,15 +10,17 @@ use yii\widgets\ActiveForm;
 
 <div class="news-form">
 
-    <?php $form = ActiveForm::begin(['options' => [
-        'enctype' => 'multipart/form-data'
-    ]]); ?>
+    <?php $form = ActiveForm::begin(); ?>
 
     <?= $form->field($model, 'title')->textInput(['maxlength' => true]) ?>
 
     <?= $form->field($model, 'image')->fileInput() ?>
 
-    <?= $form->field($model, 'description')->textarea(['rows' => 6]) ?>
+    <? if($model->image):?>
+        <img src="<?=$model->getImage()?>" alt="" class="img-responsive img-thumbnail" width="768">
+    <? endif ?>
+
+    <?= $form->field($model, 'description')->textarea(['rows' => 2]) ?>
 
     <?= $form->field($model, 'content')->textarea(['rows' => 6]) ?>
 

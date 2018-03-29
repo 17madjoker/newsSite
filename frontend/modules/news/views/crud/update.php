@@ -5,7 +5,6 @@ use yii\helpers\Html;
 /* @var $this yii\web\View */
 /* @var $model frontend\modules\news\models\News */
 
-$this->title = 'Update News: {nameAttribute}';
 ?>
 <div class="news-update">
 
@@ -13,6 +12,7 @@ $this->title = 'Update News: {nameAttribute}';
 
     <?= $this->render('_form', [
         'model' => $model,
+        'categories' => $categories
     ]) ?>
 
 </div>

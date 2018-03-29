@@ -33,7 +33,7 @@ use yii\helpers\Url;
                 <hr>
 
                 <?php if($news->image): ?>
-                    <img class="img-responsive" src="http://placehold.it/900x300" alt="">
+                    <img class="img-responsive" src="<?=$news->getImage()?>" alt="">
                     <hr>
                 <?php endif ?>
 

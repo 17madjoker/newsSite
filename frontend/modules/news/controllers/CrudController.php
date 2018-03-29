@@ -1,34 +1,22 @@
 <?php
-/**
- * Created by PhpStorm.
- * User: Kirilloid
- * Date: 29.03.2018
- * Time: 0:35
- */
 
 namespace frontend\modules\news\controllers;
-use frontend\modules\news\models\Category;
-use yii\web\UploadedFile;
-use yii\base\Controller;
+
 use Yii;
 use frontend\modules\news\models\News;
-use yii\helpers\ArrayHelper;
+use yii\data\ActiveDataProvider;
+use yii\web\Controller;
+use yii\web\NotFoundHttpException;
 use yii\filters\VerbFilter;
+use frontend\modules\news\models\Category;
+use yii\helpers\ArrayHelper;
+use yii\web\UploadedFile;
 
+/**
+ * CrudController implements the CRUD actions for News model.
+ */
 class CrudController extends Controller
 {
-    public function behaviors()
-    {
-        return [
-            'verbs' => [
-                'class' => VerbFilter::className(),
-                'actions' => [
-                    'delete' => ['POST'],
-                    'update' => ['POST'],
-                ],
-            ],
-        ];
-    }
     /**
      * Creates a new News model.
      * If creation is successful, the browser will be redirected to the 'view' page.
@@ -38,7 +26,7 @@ class CrudController extends Controller
     {
         if (Yii::$app->user->isGuest)
         {
-            return $this->redirect('/site/index');
+            return $this->redirect('/user/default/login');
         }
 
         $model = new News();
@@ -53,12 +41,12 @@ class CrudController extends Controller
             $file = UploadedFile::getInstance($model, 'image');
             $path = $model->getFolder();
 
-            $fileName = $model->generateFileName($file).$file->extension;
-                if ($file->saveAs($path . $fileName))
-                {
-                    $model->image = $fileName;
-                    $model->save();
-                }
+            $fileName = $model->generateFileName().'.'.$file->extension;
+            if ($file->saveAs($path . $fileName))
+            {
+                $model->image = $fileName;
+                $model->save();
+            }
             return Yii::$app->response->redirect(['/news/default/view', 'id' => $model->id]);
         }
 
@@ -73,43 +61,56 @@ class CrudController extends Controller
      * If update is successful, the browser will be redirected to the 'view' page.
      * @param integer $id
      * @return mixed
+     * @throws NotFoundHttpException if the model cannot be found
      */
     public function actionUpdate($id)
     {
-        echo '123'; die;
         if (Yii::$app->user->isGuest)
         {
-            return $this->redirect('/site/index');
+            return $this->redirect('/user/default/login');
         }
 
         $model = $this->findModel($id);
+        $oldImage = $model->image;
+        $categories = Category::find()->asArray()->all();
+        $categories = ArrayHelper::map($categories, 'id', 'title');
 
-        if ($model->load(Yii::$app->request->post()) && $model->save()) {
-            return $this->redirect(['/news/default/view', 'id' => $model->id]);
+        if ($model->load(Yii::$app->request->post())) {
+            $file = UploadedFile::getInstance($model, 'image');
+            $path = $model->getFolder();
+
+            unlink($path.$oldImage);
+
+            $fileName = $model->generateFileName().'.'.$file->extension;
+            if ($file->saveAs($path . $fileName))
+            {
+                $model->image = $fileName;
+                $model->save();
+            }
+            return Yii::$app->response->redirect(['/news/default/view', 'id' => $model->id]);
         }
 
         return $this->render('update', [
             'model' => $model,
+            'categories' => $categories,
         ]);
     }
-
 
     /**
      * Deletes an existing News model.
      * If deletion is successful, the browser will be redirected to the 'index' page.
      * @param integer $id
      * @return mixed
+     * @throws NotFoundHttpException if the model cannot be found
      */
     public function actionDelete($id)
     {
-        if (Yii::$app->user->isGuest)
+        if($model = $this->findModel($id))
         {
-            return $this->redirect('/site/index');
+            $model->delete();
         }
 
-        $this->findModel($id)->delete();
-
-        return $this->redirect(['/site/index']);
+        return Yii::$app->response->redirect(['site/index']);
     }
 
     /**
@@ -127,6 +128,4 @@ class CrudController extends Controller
 
         throw new NotFoundHttpException('The requested page does not exist.');
     }
-
-
 }

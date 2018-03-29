@@ -44,7 +44,7 @@ class DefaultController extends Controller
     {
         if (Yii::$app->user->isGuest)
         {
-            return $this->redirect('/user/default/login');
+            return $this->redirect(['/user/default/login']);
         }
 
         $news = $this->findModel($id);
@@ -70,7 +70,7 @@ class DefaultController extends Controller
     {
         if (Yii::$app->user->isGuest)
         {
-            return $this->redirect('/user/default/login');
+            return $this->redirect(['/user/default/login']);
         }
 
         $news = $this->findModel($id);

@@ -34,11 +34,13 @@ use yii\helpers\Url;
                     <a class="btn btn-danger" href="<?=Url::to(['/news/default/dislike','id' => $news->id])?>"><span class="badge"><?=$news->likes?></span> Dislike <span class="glyphicon glyphicon-thumbs-up"></span></a>
                 <?php endif ?>
             </p>
-            <p>
-                <a href="<?=Url::to(['/news/crud/update','id' => $news->id,'method' => 'post',])?>" class="btn btn-default">Update</a>
-                <a href="<?=Url::to(['/news/crud/delete','id' => $news->id])?>" class="btn btn-default">Delete</a>
-            </p>
 
+            <?php if(Yii::$app->user->identity->status === 10):?>
+            <p>
+                <a href="<?=Url::to(['/news/crud/update','id' => $news->id,'method' => 'post'])?>" class="btn btn-default">Update</a>
+                <a href="<?=Url::to(['/news/crud/delete','id' => $news->id,'method' => 'post'])?>" class="btn btn-default">Delete</a>
+            </p>
+            <?php endif ?>
 
             <hr>
 

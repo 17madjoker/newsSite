@@ -34,7 +34,7 @@ use yii\helpers\Url;
             <p><span class="glyphicon glyphicon-time"></span> Posted
                 on <?= Yii::$app->formatter->asDate($oneNews->date) ?></p>
             <hr>
-            <img class="img-responsive" src="http://placehold.it/900x300" alt="">
+            <img class="img-responsive" src="<?=$oneNews->getImage()?>" alt="">
             <hr>
             <p><?= Html::encode($oneNews->description) ?></p>
             <p>
